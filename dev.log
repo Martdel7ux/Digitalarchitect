@@ -1,0 +1,38 @@
+
+> dela-digital-architect@1.0.0 dev
+> vite
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m1013[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m9:53:48 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/sections/HeroSection.tsx, /src/index.css[22m
+[2m10:04:19 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/sections/HeroSection.tsx, /src/index.css[22m
+[2m10:04:29 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/sections/HeroSection.tsx, /src/index.css[22m
+[2m10:05:49 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Magnet.tsx, /src/index.css[22m
+[2m10:09:23 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:09:34 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:11:46 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:12:58 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:13:30 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:15:43 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:15:53 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:16:03 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:16:55 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:34:51 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:35:01 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:35:19 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:35:33 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:35:44 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/AvatarMenu.tsx, /src/index.css[22m
+[2m10:42:30 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/sections/HeroSection.tsx, /src/index.css[22m
+[2m10:43:08 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/sections/HeroSection.tsx, /src/index.css[22m
+[2m10:43:40 PM[22m [36m[1m[vite][22m[39m [32m✨ new dependencies optimized: [33mlucide-react[32m[39m
+[2m10:43:40 PM[22m [36m[1m[vite][22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[2m10:46:18 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CircleMenu.tsx, /src/index.css[22m
+[2m10:46:37 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CircleMenu.tsx, /src/index.css[22m
+[2m10:51:38 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/sections/HeroSection.tsx, /src/index.css[22m
+[2m10:51:49 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/sections/HeroSection.tsx, /src/index.css[22m
+[2m10:55:07 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CircleMenu.tsx, /src/index.css[22m
+[2m10:55:47 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CircleMenu.tsx, /src/index.css[22m
+[2m10:55:57 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CircleMenu.tsx, /src/index.css[22m
