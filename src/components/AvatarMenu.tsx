@@ -3,24 +3,30 @@ import {
   motion,
   AnimatePresence,
   useReducedMotion,
-  useMotionValue,
-  useSpring,
+  type Variants,
 } from 'framer-motion';
 
 type AvatarMenuProps = {
   src: string;
 };
 
-const PILLS = [
-  { label: 'Mobile App Development', angle: 158 },
-  { label: 'Web Design & Development', angle: 90 },
-  { label: 'Software Development', angle: 22 },
+type Stat = {
+  label: string;
+  value: string;
+  status?: boolean;
+};
+
+const STATS: Stat[] = [
+  {
+    label: 'Speciality',
+    value: 'Web, Software & Mobile App Development',
+  },
+  { label: 'Education', value: 'BSc Management Information Systems' },
+  { label: 'Projects', value: '20+ Completed' },
+  { label: 'Location', value: 'Nicosia, Cyprus' },
+  { label: 'Availability', value: 'Currently open to new projects', status: true },
 ];
 
-// Fraction of avatar width used as the radial menu radius.
-const RADIUS_RATIO = 0.62;
-// Vertical anchor of the mouth (fraction of avatar height).
-const MOUTH_TOP = '62%';
 // Springy entrance: damping 18 under stiffness 300 gives a slight overshoot.
 const SPRING = { type: 'spring' as const, stiffness: 300, damping: 18 };
 
@@ -31,134 +37,136 @@ const AVATAR_MASK =
   'linear-gradient(to bottom, #000 0%, #000 52%, rgba(0,0,0,0.55) 78%, transparent 96%), ' +
   'radial-gradient(115% 100% at 50% 40%, #000 52%, rgba(0,0,0,0.4) 82%, transparent 100%)';
 
-const glassBase: React.CSSProperties = {
-  backgroundColor: 'rgba(255, 255, 255, 0.08)',
-  border: '1px solid rgba(255, 255, 255, 0.25)',
-  boxShadow: '0 4px 24px rgba(0, 0, 0, 0.25)',
-};
+const ACCENT = '#0000FF';
 
-const glassHover: React.CSSProperties = {
-  backgroundColor: 'rgba(139, 92, 246, 0.16)',
-  border: '1px solid rgba(167, 139, 250, 0.95)',
-  boxShadow:
-    '0 0 24px rgba(139, 92, 246, 0.7), inset 0 0 0 1px rgba(167, 139, 250, 0.6)',
-};
-
-/* ----------------------------- Service pill ----------------------------- */
-
-type PillProps = {
-  label: string;
-  tx: number;
-  ty: number;
-  index: number;
-  open: boolean;
-  reduced: boolean;
-};
-
-function ServicePill({ label, tx, ty, index, open, reduced }: PillProps) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [hovered, setHovered] = useState(false);
-
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const x = useSpring(mx, SPRING);
-  const y = useSpring(my, SPRING);
-
-  const handleMove = useCallback(
-    (e: React.PointerEvent) => {
-      if (reduced || !ref.current) return;
-      const r = ref.current.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const cy = r.top + r.height / 2;
-      mx.set((e.clientX - cx) * 0.35);
-      my.set((e.clientY - cy) * 0.35);
+function getVariants(reduced: boolean): { card: Variants; row: Variants } {
+  if (reduced) {
+    return {
+      card: {
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { when: 'beforeChildren' } },
+        exit: { opacity: 0, transition: { duration: 0.12 } },
+      },
+      row: { hidden: { opacity: 0 }, show: { opacity: 1 } },
+    };
+  }
+  return {
+    card: {
+      hidden: { opacity: 0, x: 24, scale: 0.95 },
+      show: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        transition: {
+          type: 'spring',
+          stiffness: 260,
+          damping: 24,
+          staggerChildren: 0.06,
+          delayChildren: 0.08,
+        },
+      },
+      exit: { opacity: 0, x: 18, scale: 0.97, transition: { duration: 0.2 } },
     },
-    [reduced, mx, my]
-  );
-
-  const handleLeave = useCallback(() => {
-    mx.set(0);
-    my.set(0);
-    setHovered(false);
-  }, [mx, my]);
-
-  return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-      <motion.div
-        className="pointer-events-auto"
-        initial={{ x: 0, y: 0, scale: 0.4, opacity: 0 }}
-        animate={
-          open
-            ? { x: tx, y: ty, scale: 1, opacity: 1 }
-            : { x: 0, y: 0, scale: 0.4, opacity: 0 }
-        }
-        transition={
-          reduced
-            ? { duration: 0.18 }
-            : { ...SPRING, delay: open ? index * 0.12 : 0 }
-        }
-      >
-        <motion.button
-          ref={ref}
-          type="button"
-          style={{
-            x: reduced ? 0 : x,
-            y: reduced ? 0 : y,
-            ...(hovered ? glassHover : glassBase),
-          }}
-          onPointerMove={handleMove}
-          onPointerEnter={() => setHovered(true)}
-          onPointerLeave={handleLeave}
-          className="whitespace-nowrap rounded-full px-4 py-2 text-xs font-medium text-white backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-200 sm:px-5 sm:py-2.5 sm:text-sm"
-        >
-          {label}
-        </motion.button>
-      </motion.div>
-    </div>
-  );
+    row: {
+      hidden: { opacity: 0, y: 12 },
+      show: {
+        opacity: 1,
+        y: 0,
+        transition: { type: 'spring', stiffness: 300, damping: 22 },
+      },
+    },
+  };
 }
 
-/* ----------------------------- Speech bubble ---------------------------- */
+/* --------------------------- Character profile -------------------------- */
 
-function SpeechBubble({ open, reduced }: { open: boolean; reduced: boolean }) {
+function ProfileCard({ open, reduced }: { open: boolean; reduced: boolean }) {
+  const v = getVariants(reduced);
+
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
-          className="pointer-events-none absolute left-1/2 z-30"
-          style={{ top: MOUTH_TOP }}
-          initial={{ opacity: 0, scale: reduced ? 1 : 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: reduced ? 1 : 0.5 }}
-          transition={reduced ? { duration: 0.18 } : SPRING}
+        <motion.aside
+          variants={v.card}
+          initial="hidden"
+          animate="show"
+          exit="exit"
+          className="absolute left-full top-1/2 z-30 ml-3 w-[260px] -translate-y-1/2 rounded-2xl p-5 backdrop-blur-xl lg:ml-6 lg:w-[290px]"
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.06)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            boxShadow:
+              '0 10px 44px rgba(0, 0, 0, 0.5), 0 0 32px rgba(139, 92, 246, 0.14)',
+          }}
         >
-          <div
-            className="relative -translate-x-1/2 rounded-2xl px-4 py-3 backdrop-blur-md"
-            style={{
-              ...glassBase,
-              transform: 'translate(-50%, calc(-100% - 14px))',
-              transformOrigin: 'bottom center',
-              maxWidth: 230,
-            }}
+          {/* HUD corner brackets */}
+          <Bracket className="left-2 top-2 border-l border-t" />
+          <Bracket className="right-2 top-2 border-r border-t" />
+          <Bracket className="bottom-2 left-2 border-b border-l" />
+          <Bracket className="bottom-2 right-2 border-b border-r" />
+
+          {/* Header */}
+          <motion.div
+            variants={v.row}
+            className="mb-4 flex items-center justify-between border-b border-white/10 pb-3"
           >
-            <p className="text-center text-sm font-medium leading-snug text-white">
-              What services do you want to hire me for?
-            </p>
-            {/* tail pointing down at the mouth */}
-            <div
-              className="absolute left-1/2 h-4 w-4 -translate-x-1/2 backdrop-blur-md"
-              style={{
-                bottom: -8,
-                transform: 'translateX(-50%) rotate(45deg)',
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                borderRight: '1px solid rgba(255, 255, 255, 0.25)',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.25)',
-              }}
-            />
+            <span
+              className="text-[10px] font-semibold uppercase tracking-[0.3em]"
+              style={{ color: ACCENT }}
+            >
+              Profile
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.25em] text-white/35">
+              DM
+            </span>
+          </motion.div>
+
+          {/* Stats */}
+          <div className="flex flex-col gap-3">
+            {STATS.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                variants={v.row}
+                className={i > 0 ? 'border-t border-white/[0.07] pt-3' : ''}
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className="h-[5px] w-[5px] rotate-45"
+                    style={{ backgroundColor: ACCENT }}
+                  />
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#9aa6b2]">
+                    {stat.label}
+                  </span>
+                </div>
+                <div className="mt-1 flex items-start gap-2 pl-[13px]">
+                  {stat.status && (
+                    <span className="relative mt-[6px] flex h-2 w-2 shrink-0">
+                      {!reduced && (
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
+                      )}
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                    </span>
+                  )}
+                  <p className="text-[13px] font-medium leading-snug text-white">
+                    {stat.value}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </motion.div>
+        </motion.aside>
       )}
     </AnimatePresence>
+  );
+}
+
+function Bracket({ className }: { className: string }) {
+  return (
+    <span
+      aria-hidden
+      className={`pointer-events-none absolute h-3 w-3 ${className}`}
+      style={{ borderColor: ACCENT, borderWidth: 1.5 }}
+    />
   );
 }
 
@@ -166,20 +174,8 @@ function SpeechBubble({ open, reduced }: { open: boolean; reduced: boolean }) {
 
 export default function AvatarMenu({ src }: AvatarMenuProps) {
   const reduced = useReducedMotion() ?? false;
-  const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const [width, setWidth] = useState(0);
   const closeTimer = useRef<number | null>(null);
-
-  useEffect(() => {
-    const el = rootRef.current;
-    if (!el) return;
-    const update = () => setWidth(el.getBoundingClientRect().width);
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   const clearCloseTimer = useCallback(() => {
     if (closeTimer.current !== null) {
@@ -200,16 +196,13 @@ export default function AvatarMenu({ src }: AvatarMenuProps) {
 
   useEffect(() => () => clearCloseTimer(), [clearCloseTimer]);
 
-  const radius = width * RADIUS_RATIO;
-
   return (
     <div
-      ref={rootRef}
       className="relative w-full"
       onPointerEnter={handleEnter}
       onPointerLeave={handleLeave}
     >
-      {/* generous invisible hit area so moving onto pills keeps the menu open */}
+      {/* generous invisible hit area so moving onto the card keeps it open */}
       <div className="absolute -inset-x-32 -inset-y-24 z-0" aria-hidden />
 
       {/* rim / glow light behind the avatar for depth */}
@@ -230,10 +223,7 @@ export default function AvatarMenu({ src }: AvatarMenuProps) {
 
       {/* idle float + hover pop */}
       <div className="relative z-10">
-        <motion.div
-          animate={{ scale: open ? 1.03 : 1 }}
-          transition={SPRING}
-        >
+        <motion.div animate={{ scale: open ? 1.03 : 1 }} transition={SPRING}>
           <motion.div
             style={{ filter: 'drop-shadow(0 28px 38px rgba(0,0,0,0.55))' }}
             animate={reduced ? undefined : { y: [0, -10, 0] }}
@@ -263,26 +253,7 @@ export default function AvatarMenu({ src }: AvatarMenuProps) {
         </motion.div>
       </div>
 
-      <SpeechBubble open={open} reduced={reduced} />
-
-      <div className="absolute inset-0 z-20">
-        {PILLS.map((pill, i) => {
-          const rad = (pill.angle * Math.PI) / 180;
-          const tx = Math.cos(rad) * radius;
-          const ty = -Math.sin(rad) * radius;
-          return (
-            <ServicePill
-              key={pill.label}
-              label={pill.label}
-              tx={tx}
-              ty={ty}
-              index={i}
-              open={open}
-              reduced={reduced}
-            />
-          );
-        })}
-      </div>
+      <ProfileCard open={open} reduced={reduced} />
     </div>
   );
 }
