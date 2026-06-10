@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import HeroSection from './sections/HeroSection';
 import GetToKnowMe from './sections/GetToKnowMe';
 import HowIWork from './sections/HowIWork';
+import WhatIBring from './sections/WhatIBring';
 import ProjectsScroll from './sections/ProjectsScroll';
 import MyThoughts from './sections/MyThoughts';
 import LetsCook from './sections/LetsCook';
@@ -20,6 +21,7 @@ export default function App() {
       <HeroSection />
       <GetToKnowMe />
       <HowIWork />
+      <WhatIBring />
       <ProjectsScroll />
       <MyThoughts />
       <LetsCook />
