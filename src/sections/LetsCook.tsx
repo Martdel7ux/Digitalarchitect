@@ -301,12 +301,14 @@ export default function LetsCook() {
     setReady(false);
   }, [step]);
 
-  // Keep the latest message in view — but never on the initial mount.
+  // Keep the latest message in view as the conversation advances — but never
+  // on mount or the very first question (which would scroll the page on load).
   useEffect(() => {
     if (!didMount.current) {
       didMount.current = true;
       return;
     }
+    if (step === 0 && !scheduled) return;
     anchorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, [step, ready, scheduled]);
 
@@ -432,22 +434,28 @@ export default function LetsCook() {
                           <div className="flex items-end gap-2">
                             {q.type === 'textarea' ? (
                               <textarea
+                                ref={(el) => {
+                                  if (el && document.activeElement !== el)
+                                    el.focus({ preventScroll: true });
+                                }}
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 placeholder={q.placeholder}
                                 rows={3}
-                                autoFocus
                                 className="flex-1 resize-none rounded-2xl bg-white/[0.04] px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:bg-white/[0.07] sm:text-base"
                                 style={{ border: '1px solid rgba(255,255,255,0.14)' }}
                               />
                             ) : (
                               <input
+                                ref={(el) => {
+                                  if (el && document.activeElement !== el)
+                                    el.focus({ preventScroll: true });
+                                }}
                                 type={q.type}
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && submitText()}
                                 placeholder={q.placeholder}
-                                autoFocus
                                 className="flex-1 rounded-full bg-white/[0.04] px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:bg-white/[0.07] sm:text-base"
                                 style={{ border: '1px solid rgba(255,255,255,0.14)' }}
                               />

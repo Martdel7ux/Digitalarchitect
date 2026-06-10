@@ -1,4 +1,10 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import {
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from 'react';
 import {
   motion,
   AnimatePresence,
@@ -395,7 +401,10 @@ export default function ProjectsScroll() {
   const distanceRef = useRef(0);
   const [gallery, setGallery] = useState<string[] | null>(null);
 
-  useEffect(() => {
+  // useLayoutEffect so the section reserves its full height BEFORE the first
+  // paint. Otherwise the page is briefly short on load, which pulls later
+  // sections into view and triggers their scroll/focus behaviour.
+  useLayoutEffect(() => {
     if (reduced) return;
     const measure = () => {
       const track = trackRef.current;

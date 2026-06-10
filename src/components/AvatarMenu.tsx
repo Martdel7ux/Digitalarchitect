@@ -34,8 +34,8 @@ const SPRING = { type: 'spring' as const, stiffness: 300, damping: 18 };
 // a strong bottom fade (so the shoulders dissolve into the dark) plus a soft
 // vignette that softens the side/top edges of the cutout.
 const AVATAR_MASK =
-  'linear-gradient(to bottom, #000 0%, #000 52%, rgba(0,0,0,0.55) 78%, transparent 96%), ' +
-  'radial-gradient(115% 100% at 50% 40%, #000 52%, rgba(0,0,0,0.4) 82%, transparent 100%)';
+  'linear-gradient(to bottom, #000 0%, #000 40%, rgba(0,0,0,0.4) 70%, transparent 88%), ' +
+  'radial-gradient(82% 88% at 50% 37%, #000 34%, rgba(0,0,0,0.35) 64%, transparent 94%)';
 
 const ACCENT = '#0000FF';
 
@@ -51,21 +51,18 @@ function getVariants(reduced: boolean): { card: Variants; row: Variants } {
     };
   }
   return {
+    // Opacity-only so it never fights the Tailwind centering transform.
     card: {
-      hidden: { opacity: 0, x: 24, scale: 0.95 },
+      hidden: { opacity: 0 },
       show: {
         opacity: 1,
-        x: 0,
-        scale: 1,
         transition: {
-          type: 'spring',
-          stiffness: 260,
-          damping: 24,
+          duration: 0.3,
           staggerChildren: 0.06,
           delayChildren: 0.08,
         },
       },
-      exit: { opacity: 0, x: 18, scale: 0.97, transition: { duration: 0.2 } },
+      exit: { opacity: 0, transition: { duration: 0.2 } },
     },
     row: {
       hidden: { opacity: 0, y: 12 },
@@ -91,12 +88,14 @@ function ProfileCard({ open, reduced }: { open: boolean; reduced: boolean }) {
           initial="hidden"
           animate="show"
           exit="exit"
-          className="absolute left-1/2 top-[60%] z-40 w-[86vw] max-w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-2xl p-5 backdrop-blur-xl sm:left-full sm:top-1/2 sm:ml-3 sm:w-[260px] sm:max-w-none sm:translate-x-0 sm:-translate-y-1/2 lg:ml-6 lg:w-[290px]"
+          className="absolute left-1/2 top-[60%] z-40 w-[86vw] max-w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-2xl p-5 sm:left-full sm:top-1/2 sm:ml-3 sm:w-[260px] sm:max-w-none sm:translate-x-0 sm:-translate-y-1/2 lg:ml-6 lg:w-[290px]"
           style={{
-            backgroundColor: 'rgba(12, 12, 16, 0.9)',
-            border: '1px solid rgba(255, 255, 255, 0.16)',
+            backgroundColor: 'rgba(17, 19, 27, 0.55)',
+            backdropFilter: 'blur(22px) saturate(140%)',
+            WebkitBackdropFilter: 'blur(22px) saturate(140%)',
+            border: '1px solid rgba(255, 255, 255, 0.18)',
             boxShadow:
-              '0 10px 44px rgba(0, 0, 0, 0.6), 0 0 32px rgba(139, 92, 246, 0.16)',
+              '0 10px 44px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 32px rgba(139, 92, 246, 0.14)',
           }}
         >
           {/* HUD corner brackets */}
@@ -174,7 +173,7 @@ function Bracket({ className }: { className: string }) {
 
 export default function AvatarMenu({ src }: AvatarMenuProps) {
   const reduced = useReducedMotion() ?? false;
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [coarse, setCoarse] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
