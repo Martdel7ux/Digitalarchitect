@@ -91,7 +91,7 @@ function ProfileCard({ open, reduced }: { open: boolean; reduced: boolean }) {
           initial="hidden"
           animate="show"
           exit="exit"
-          className="absolute left-full top-1/2 z-30 ml-3 w-[260px] -translate-y-1/2 rounded-2xl p-5 backdrop-blur-xl lg:ml-6 lg:w-[290px]"
+          className="absolute bottom-full left-1/2 z-30 mb-4 w-[84vw] max-w-[300px] -translate-x-1/2 rounded-2xl p-5 backdrop-blur-xl sm:bottom-auto sm:left-full sm:top-1/2 sm:mb-0 sm:ml-3 sm:w-[260px] sm:max-w-none sm:translate-x-0 sm:-translate-y-1/2 lg:ml-6 lg:w-[290px]"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.06)',
             border: '1px solid rgba(255, 255, 255, 0.14)',
