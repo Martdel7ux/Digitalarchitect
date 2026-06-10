@@ -25,7 +25,7 @@ export default function HeroSection() {
           as="h1"
           delay={0.15}
           y={40}
-          className="hero-heading mt-6 w-full whitespace-nowrap text-center font-black uppercase leading-none tracking-tight text-[14vw] sm:mt-4 sm:text-[15vw] md:-mt-5 md:text-[16vw] lg:text-[17.5vw]"
+          className="hero-heading mt-6 w-full text-center font-black uppercase leading-[0.95] tracking-tight text-[17vw] sm:mt-4 sm:whitespace-nowrap sm:text-[15vw] sm:leading-none md:-mt-5 md:text-[16vw] lg:text-[17.5vw]"
         >
           Hi, i&apos;m Dela
         </FadeIn>
