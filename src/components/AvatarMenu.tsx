@@ -91,12 +91,12 @@ function ProfileCard({ open, reduced }: { open: boolean; reduced: boolean }) {
           initial="hidden"
           animate="show"
           exit="exit"
-          className="absolute left-1/2 top-1/2 z-40 w-[86vw] max-w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-2xl p-5 backdrop-blur-xl sm:left-full sm:top-1/2 sm:ml-3 sm:w-[260px] sm:max-w-none sm:translate-x-0 sm:-translate-y-1/2 lg:ml-6 lg:w-[290px]"
+          className="absolute left-1/2 top-[60%] z-40 w-[86vw] max-w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-2xl p-5 backdrop-blur-xl sm:left-full sm:top-1/2 sm:ml-3 sm:w-[260px] sm:max-w-none sm:translate-x-0 sm:-translate-y-1/2 lg:ml-6 lg:w-[290px]"
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.06)',
-            border: '1px solid rgba(255, 255, 255, 0.14)',
+            backgroundColor: 'rgba(12, 12, 16, 0.9)',
+            border: '1px solid rgba(255, 255, 255, 0.16)',
             boxShadow:
-              '0 10px 44px rgba(0, 0, 0, 0.5), 0 0 32px rgba(139, 92, 246, 0.14)',
+              '0 10px 44px rgba(0, 0, 0, 0.6), 0 0 32px rgba(139, 92, 246, 0.16)',
           }}
         >
           {/* HUD corner brackets */}
@@ -174,7 +174,7 @@ function Bracket({ className }: { className: string }) {
 
 export default function AvatarMenu({ src }: AvatarMenuProps) {
   const reduced = useReducedMotion() ?? false;
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [coarse, setCoarse] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);

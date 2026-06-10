@@ -754,7 +754,7 @@ export default function MyThoughts() {
   return (
     <section
       id="thoughts"
-      className="flex min-h-screen flex-col items-center justify-center px-5 py-24 sm:px-8 md:px-10"
+      className="flex flex-col items-center px-5 py-16 sm:px-8 sm:py-20 md:px-10"
       style={{ background: '#0C0C0C' }}
     >
       <div className="w-full max-w-xl">

@@ -1,0 +1,23 @@
+import fs from 'fs';
+const list = await (await fetch('http://localhost:9225/json')).json();
+const page = list.find((t) => t.type === 'page');
+const ws = new WebSocket(page.webSocketDebuggerUrl);
+await new Promise((r) => (ws.onopen = r));
+let id = 0; const pending = new Map();
+ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.id && pending.has(m.id)) { pending.get(m.id)(m); pending.delete(m.id); } };
+const send = (method, params = {}) => new Promise((res) => { const i = ++id; pending.set(i, res); ws.send(JSON.stringify({ id: i, method, params })); });
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const ev = async (expr) => { const r = await send('Runtime.evaluate', { expression: expr, returnByValue: true }); return r.result ? r.result.value : null; };
+await send('Page.enable'); await send('Runtime.enable');
+await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: false });
+await send('Page.navigate', { url: 'http://localhost:5173/' });
+await sleep(4000);
+await ev(`window.scrollTo(0,0)`);
+await sleep(500);
+const rect = await ev(`(()=>{const r=document.querySelector('img[alt="Dela portrait"]').getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height*0.4)}})()`);
+if(rect){ await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:rect.x,y:rect.y}); }
+await sleep(1600);
+const r = await send('Page.captureScreenshot', { format: 'png' });
+fs.writeFileSync('_shots/card.png', Buffer.from(r.result.data, 'base64'));
+console.log('rect', JSON.stringify(rect));
+ws.close(); process.exit(0);

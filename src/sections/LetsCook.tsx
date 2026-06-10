@@ -348,7 +348,7 @@ export default function LetsCook() {
     <section
       id="contact"
       ref={sectionRef}
-      className="flex min-h-screen flex-col justify-center px-5 py-24 sm:px-8 md:px-10"
+      className="flex flex-col px-5 py-16 sm:px-8 sm:py-20 md:px-10"
       style={{ background: '#0C0C0C' }}
     >
       <div className="mx-auto w-full max-w-2xl">

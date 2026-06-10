@@ -121,7 +121,7 @@ export default function LetsConnect() {
   return (
     <footer
       id="connect"
-      className="px-5 py-24 sm:px-8 sm:py-28 md:px-10"
+      className="px-5 py-16 sm:px-8 sm:py-20 md:px-10"
       style={{ background: '#0C0C0C' }}
     >
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
@@ -149,7 +149,7 @@ export default function LetsConnect() {
       </div>
 
       {/* Footer bar */}
-      <div className="mx-auto mt-20 flex w-full max-w-5xl flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
+      <div className="mx-auto mt-14 flex w-full max-w-5xl flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
         <span className="text-xs uppercase tracking-widest text-white/40">
           © 2026 Dela · The Digital Architect
         </span>

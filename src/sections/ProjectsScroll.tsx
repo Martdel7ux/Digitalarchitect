@@ -425,7 +425,7 @@ export default function ProjectsScroll() {
     return (
       <section
         id="projects"
-        className="px-5 py-24 sm:px-8 md:px-10"
+        className="px-5 py-16 sm:px-8 sm:py-20 md:px-10"
         style={{ background: '#0C0C0C' }}
       >
         <h2
