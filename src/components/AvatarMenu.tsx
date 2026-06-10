@@ -91,7 +91,7 @@ function ProfileCard({ open, reduced }: { open: boolean; reduced: boolean }) {
           initial="hidden"
           animate="show"
           exit="exit"
-          className="absolute bottom-full left-1/2 z-30 mb-4 w-[84vw] max-w-[300px] -translate-x-1/2 rounded-2xl p-5 backdrop-blur-xl sm:bottom-auto sm:left-full sm:top-1/2 sm:mb-0 sm:ml-3 sm:w-[260px] sm:max-w-none sm:translate-x-0 sm:-translate-y-1/2 lg:ml-6 lg:w-[290px]"
+          className="absolute left-1/2 top-1/2 z-40 w-[86vw] max-w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-2xl p-5 backdrop-blur-xl sm:left-full sm:top-1/2 sm:ml-3 sm:w-[260px] sm:max-w-none sm:translate-x-0 sm:-translate-y-1/2 lg:ml-6 lg:w-[290px]"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.06)',
             border: '1px solid rgba(255, 255, 255, 0.14)',
@@ -175,7 +175,18 @@ function Bracket({ className }: { className: string }) {
 export default function AvatarMenu({ src }: AvatarMenuProps) {
   const reduced = useReducedMotion() ?? false;
   const [open, setOpen] = useState(false);
+  const [coarse, setCoarse] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
+
+  // Detect touch / coarse-pointer devices (phones, tablets).
+  useEffect(() => {
+    const mq = window.matchMedia('(pointer: coarse)');
+    const update = () => setCoarse(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   const clearCloseTimer = useCallback(() => {
     if (closeTimer.current !== null) {
@@ -196,11 +207,25 @@ export default function AvatarMenu({ src }: AvatarMenuProps) {
 
   useEffect(() => () => clearCloseTimer(), [clearCloseTimer]);
 
+  // On touch: tapping outside the avatar closes the profile card.
+  useEffect(() => {
+    if (!coarse || !open) return;
+    const onDown = (e: PointerEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', onDown);
+    return () => document.removeEventListener('pointerdown', onDown);
+  }, [coarse, open]);
+
   return (
     <div
+      ref={rootRef}
       className="relative w-full"
-      onPointerEnter={handleEnter}
-      onPointerLeave={handleLeave}
+      onPointerEnter={coarse ? undefined : handleEnter}
+      onPointerLeave={coarse ? undefined : handleLeave}
+      onClick={coarse ? () => setOpen(true) : undefined}
     >
       {/* generous invisible hit area so moving onto the card keeps it open */}
       <div className="absolute -inset-x-32 -inset-y-24 z-0" aria-hidden />

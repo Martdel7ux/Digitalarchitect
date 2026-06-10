@@ -32,7 +32,7 @@ export default function HeroSection() {
       </div>
 
       {/* Hero Portrait with interactive service menu */}
-      <div className="absolute bottom-0 left-1/2 z-10 w-[280px] -translate-x-1/2 translate-y-[12%] sm:w-[360px] md:w-[440px] lg:w-[520px]">
+      <div className="absolute left-1/2 top-[26%] z-10 w-[270px] -translate-x-1/2 sm:top-auto sm:bottom-0 sm:translate-y-[12%] sm:w-[360px] md:w-[440px] lg:w-[520px]">
         <FadeIn delay={0.6} y={30}>
           <AvatarMenu src={PORTRAIT_URL} />
         </FadeIn>

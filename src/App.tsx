@@ -4,6 +4,7 @@ import HowIWork from './sections/HowIWork';
 import ProjectsScroll from './sections/ProjectsScroll';
 import MyThoughts from './sections/MyThoughts';
 import LetsCook from './sections/LetsCook';
+import LetsConnect from './sections/LetsConnect';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
       <ProjectsScroll />
       <MyThoughts />
       <LetsCook />
+      <LetsConnect />
     </main>
   );
 }
