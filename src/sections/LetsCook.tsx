@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, Fragment } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion, useInView } from 'framer-motion';
 import { Send, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -103,17 +103,23 @@ async function submitToGoogleForm(a: Answers) {
 function TypedText({
   text,
   reduced,
+  run = true,
   onDone,
 }: {
   text: string;
   reduced: boolean;
+  run?: boolean;
   onDone?: () => void;
 }) {
-  const [out, setOut] = useState(reduced ? text : '');
+  const [out, setOut] = useState('');
   const doneRef = useRef(onDone);
   doneRef.current = onDone;
 
   useEffect(() => {
+    if (!run) {
+      setOut('');
+      return;
+    }
     if (reduced) {
       setOut(text);
       doneRef.current?.();
@@ -130,7 +136,7 @@ function TypedText({
       }
     }, 18);
     return () => window.clearInterval(id);
-  }, [text, reduced]);
+  }, [text, reduced, run]);
 
   return <>{out}</>;
 }
@@ -268,6 +274,11 @@ export default function LetsCook() {
   const [ready, setReady] = useState(false);
   const [scheduled, setScheduled] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  // Only start the conversation once the section is scrolled into view, so the
+  // page never auto-jumps here (autofocus / scroll-into-view) on initial load.
+  const started = useInView(sectionRef, { once: true, margin: '-25%' });
+  const didMount = useRef(false);
 
   // Listen for Calendly's "booking confirmed" event.
   useEffect(() => {
@@ -290,8 +301,12 @@ export default function LetsCook() {
     setReady(false);
   }, [step]);
 
-  // Keep the latest message in view.
+  // Keep the latest message in view — but never on the initial mount.
   useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
     anchorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, [step, ready, scheduled]);
 
@@ -332,6 +347,7 @@ export default function LetsCook() {
   return (
     <section
       id="contact"
+      ref={sectionRef}
       className="flex min-h-screen flex-col justify-center px-5 py-24 sm:px-8 md:px-10"
       style={{ background: '#0C0C0C' }}
     >
@@ -378,6 +394,7 @@ export default function LetsCook() {
                       <TypedText
                         text={promptText}
                         reduced={reduced}
+                        run={i > 0 || started}
                         onDone={() => setReady(true)}
                       />
                     ) : (
