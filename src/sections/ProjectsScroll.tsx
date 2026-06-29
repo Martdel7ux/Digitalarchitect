@@ -472,10 +472,10 @@ export default function ProjectsScroll() {
           className="flex items-center gap-6 px-6 will-change-transform sm:gap-8 md:px-10"
         >
           {/* Intro panel */}
-          <div className="flex h-[78vh] w-[78vw] shrink-0 flex-col justify-center sm:w-[44vw] md:w-[34vw] lg:w-[28vw]">
+          <div className="flex h-[78vh] w-[82vw] shrink-0 flex-col justify-center sm:w-[54vw] md:w-[42vw] lg:w-[36vw]">
             <h2
               className="hero-heading font-black uppercase leading-none tracking-tight"
-              style={{ fontSize: 'clamp(3rem, 9vw, 130px)' }}
+              style={{ fontSize: 'clamp(2.5rem, 7vw, 84px)' }}
             >
               Projects
             </h2>
